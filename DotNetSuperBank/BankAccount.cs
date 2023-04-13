@@ -32,9 +32,12 @@ namespace DotNetSuperBank
         private List<Transaction> allTransactions = new List<Transaction>();
 
         //constructor
-        public BankAccount(string name)
+        public BankAccount(string name, decimal initialBalance)
         {
             Owner = name;
+
+            MakeDeposit(initialBalance, DateTime.Now, "Initial Balance");
+
             Number = accountNumberSeed.ToString();
             accountNumberSeed++;
         }
@@ -63,6 +66,22 @@ namespace DotNetSuperBank
             var withdrawal = new Transaction(-amount, date, note);
             allTransactions.Add(withdrawal);
         }
+
+        public string GetAccountHistory()
+        {
+            var report = new StringBuilder();
+
+            // HEADER
+            report.AppendLine("Date\t\tAmount\tNote");
+            foreach (var item in allTransactions)
+            {
+                // ROWS
+                report.AppendLine($"{item.Date.ToShortDateString()}\t{item.Amount}\t{item.Notes}");
+            }
+            return report.ToString();
+        }
+
+
 
     }
 }
